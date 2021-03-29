@@ -1,4 +1,4 @@
-name: Total3D
+name: base
 channels:
   - pytorch
   - defaults
@@ -9,7 +9,7 @@ dependencies:
   - ca-certificates=2020.1.1
   - certifi=2020.6.20
   - cffi=1.14.0
-  - cudatoolkit=9.0
+  - cudatoolkit
   - curl=7.69.1
   - expat=2.2.6
   - freetype=2.9.1

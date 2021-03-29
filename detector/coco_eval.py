@@ -13,7 +13,7 @@ import pycocotools.mask as mask_util
 
 from collections import defaultdict
 
-import utils
+from t3d_colab.detector import utils
 
 
 class CocoEvaluator(object):
