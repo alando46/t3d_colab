@@ -37,10 +37,10 @@ def get_data_transforms(train):
     return Compose(tfms)    
 
 class SunRGBD:
-    def __init__(self, root, img_transforms, data_transforms=None):
+    def __init__(self, root, img_transforms, data_transforms=None, bbox_format='pascal_voc'):
         self.root = root
         self.data = list(sorted(os.listdir(os.path.join(root, "sunrgbd_train_test_data"))))
-        
+        self.bbox_format = bbox_format
         # transforms related to loading and normalizing images
         self.img_transforms = img_transforms
         # transforms related to cropping/rotation/data aug that affect
@@ -55,7 +55,16 @@ class SunRGBD:
 
         img = sample['rgb_img']
         
-        boxes = torch.as_tensor(sample['boxes']['bdb2D_pos'], dtype=torch.float32)
+        #sunrgbd bboxes are in coco format:
+        # [x_min, y_min, width, height]
+        boxes = sample['boxes']['bdb2D_pos']
+        if self.bbox_format == 'pascal_voc':
+            # change to pascal bboxes
+            # [x_min, y_min, x_max, y_max]
+            boxes[:,2] = boxes[:,0] + boxes[:,2]
+            boxes[:,3] = boxes[:,1] + boxes[:,3]
+        
+        boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.as_tensor(sample['boxes']['size_cls'], dtype=torch.int64)
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         # suppose all instances are not crowd
