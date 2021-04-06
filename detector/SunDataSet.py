@@ -58,11 +58,11 @@ class SunRGBD:
         #sunrgbd bboxes are in coco format:
         # [x_min, y_min, width, height]
         boxes = sample['boxes']['bdb2D_pos']
-        if self.bbox_format == 'pascal_voc':
+        # if self.bbox_format == 'pascal_voc':
             # change to pascal bboxes
             # [x_min, y_min, x_max, y_max]
-            boxes[:,2] = boxes[:,0] + boxes[:,2]
-            boxes[:,3] = boxes[:,1] + boxes[:,3]
+        #    boxes[:,2] = boxes[:,0] + boxes[:,2]
+        #    boxes[:,3] = boxes[:,1] + boxes[:,3]
         
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.as_tensor(sample['boxes']['size_cls'], dtype=torch.int64)
